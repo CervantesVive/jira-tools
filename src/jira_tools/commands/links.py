@@ -1,7 +1,7 @@
 """Generate Google Sheets HYPERLINK formulas for JIRA issues."""
 import sys
 from pathlib import Path
-from typing_extensions import Annotated
+from typing import Annotated
 import typer
 from jira_tools.utils import search_jira_with_jql, JIRA_SERVER
 

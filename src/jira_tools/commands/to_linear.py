@@ -5,7 +5,7 @@ import re
 import sys
 from pathlib import Path
 from typing import List, Optional
-from typing_extensions import Annotated
+from typing import Annotated
 import typer
 from jira_tools import utils as jira_utils
 

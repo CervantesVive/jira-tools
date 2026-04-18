@@ -42,39 +42,47 @@ MAX_RESULTS_SAFETY_LIMIT = 500  # Maximum allowed results (queries with more wil
 MAX_RETRY_ATTEMPTS = 5  # Maximum retry attempts for rate limiting
 RATE_LIMIT_BASE_BACKOFF = 1  # Base time in seconds for exponential backoff (1s, 2s, 4s, 8s, 16s)
 
-# Validate required environment variables
-missing_vars = []
-if not JIRA_SERVER:
-    missing_vars.append('JIRA_SERVER')
-if not JIRA_EMAIL:
-    missing_vars.append('JIRA_EMAIL')
-if not JIRA_API_TOKEN:
-    missing_vars.append('JIRA_API_TOKEN')
-
-if missing_vars:
-    error_msg = (
-        f"Missing required environment variables: {', '.join(missing_vars)}\n\n"
-        "Please ensure the following are set:\n"
-        "  - JIRA_SERVER: Base URL of your JIRA instance (e.g., https://your-domain.atlassian.net)\n"
-        "  - JIRA_EMAIL: Your JIRA account email\n"
-        "  - JIRA_API_TOKEN: Your JIRA API token\n\n"
-        "You can set these in a .env file in the project root or export them as environment variables."
-    )
-    raise EnvironmentError(error_msg)
-
 # Module-level verbose flag - can be set by calling scripts before importing
 # Example: import jira_utils; jira_utils.VERBOSE = True
 VERBOSE = False
 
-# Print configuration values
-if VERBOSE:
-    print("=" * 80, file=sys.stderr)
-    print("JIRA Configuration:", file=sys.stderr)
-    print("=" * 80, file=sys.stderr)
-    print(f"JIRA_SERVER: {JIRA_SERVER}", file=sys.stderr)
-    print(f"JIRA_EMAIL: {JIRA_EMAIL}", file=sys.stderr)
-    print("=" * 80, file=sys.stderr)
-    print(file=sys.stderr)
+
+def _require_env():
+    """Validate required environment variables are set.
+
+    Called lazily at the start of any function that makes API calls,
+    so that --help and other non-API operations work without credentials.
+
+    Raises:
+        EnvironmentError: If any required variable is missing.
+    """
+    missing_vars = []
+    if not JIRA_SERVER:
+        missing_vars.append('JIRA_SERVER')
+    if not JIRA_EMAIL:
+        missing_vars.append('JIRA_EMAIL')
+    if not JIRA_API_TOKEN:
+        missing_vars.append('JIRA_API_TOKEN')
+
+    if missing_vars:
+        error_msg = (
+            f"Missing required environment variables: {', '.join(missing_vars)}\n\n"
+            "Please ensure the following are set:\n"
+            "  - JIRA_SERVER: Base URL of your JIRA instance (e.g., https://your-domain.atlassian.net)\n"
+            "  - JIRA_EMAIL: Your JIRA account email\n"
+            "  - JIRA_API_TOKEN: Your JIRA API token\n\n"
+            "You can set these in a .env file in the project root or export them as environment variables."
+        )
+        raise EnvironmentError(error_msg)
+
+    if VERBOSE:
+        print("=" * 80, file=sys.stderr)
+        print("JIRA Configuration:", file=sys.stderr)
+        print("=" * 80, file=sys.stderr)
+        print(f"JIRA_SERVER: {JIRA_SERVER}", file=sys.stderr)
+        print(f"JIRA_EMAIL: {JIRA_EMAIL}", file=sys.stderr)
+        print("=" * 80, file=sys.stderr)
+        print(file=sys.stderr)
 
 def search_jira_with_jql(jql_query, fields=None):
     """Search JIRA using JQL via REST API v3 with automatic pagination
@@ -98,6 +106,7 @@ def search_jira_with_jql(jql_query, fields=None):
         Exception: If API returns non-200 status (after retries for 429)
         Exception: If rate limiting retries exceed MAX_RETRY_ATTEMPTS
     """
+    _require_env()
     encoded_jql = urllib.parse.quote(jql_query)
 
     # Build base URL
@@ -246,6 +255,7 @@ def _get_auth_headers():
     Returns:
         dict: Headers with Basic auth, Accept, and Content-Type
     """
+    _require_env()
     auth_string = f"{JIRA_EMAIL}:{JIRA_API_TOKEN}"
     auth_bytes = auth_string.encode('ascii')
     auth_base64 = base64.b64encode(auth_bytes).decode('ascii')

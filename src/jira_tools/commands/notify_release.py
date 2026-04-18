@@ -6,7 +6,7 @@ import shutil
 import subprocess
 import sys
 from typing import Optional
-from typing_extensions import Annotated
+from typing import Annotated
 
 import typer
 from dotenv import load_dotenv

@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 from collections import defaultdict
 from pathlib import Path
 from typing import Optional
-from typing_extensions import Annotated
+from typing import Annotated
 import typer
 
 # Configuration

@@ -1,7 +1,7 @@
 """Calculate story point statistics for JIRA issues matching a JQL query."""
 import sys
 import json
-from typing_extensions import Annotated
+from typing import Annotated
 import typer
 from jira_tools import utils as jira_utils
 
