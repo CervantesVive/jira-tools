@@ -144,7 +144,7 @@ def read_keys_from_csv(path):
 def to_linear(
     keys: Annotated[Optional[List[str]], typer.Argument(help="JIRA issue keys (e.g. CE-10239)")] = None,
     file: Annotated[Optional[str], typer.Option("-f", "--file", help="File containing JIRA keys (regex extraction)")] = None,
-    csv_file: Annotated[Optional[str], typer.Option("--csv", help="JIRA CSV export — reads Issue key column directly")] = None,
+    csv_file: Annotated[Optional[str], typer.Option("--from-csv", help="JIRA CSV export — reads Issue key column directly")] = None,
     json_output: Annotated[bool, typer.Option("--json", help="Output as JSON array")] = False,
     verbose: Annotated[bool, typer.Option("--verbose", "-v", help="Enable verbose output")] = False,
 ):
