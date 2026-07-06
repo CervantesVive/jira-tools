@@ -1,6 +1,8 @@
 [project]
 name = "jira-tools"
 version = "0.1.0"
+description = "CLI for working with JIRA issues from the terminal — statistics, Linear cross-linking, release notifications, and changelog generation."
+license = "MIT"
 requires-python = ">=3.11"
 dependencies = [
     "requests>=2.28.0",

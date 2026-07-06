@@ -9,10 +9,10 @@ from typing import Optional
 from typing import Annotated
 import typer
 
-# Configuration
+# Configuration — replace with the local paths of repos you want to scan
 REPOS = [
-    "/Users/ivopletikosic/development/acme-ui",
-    "/Users/ivopletikosic/development/acme-retail"
+    "/path/to/repo1",
+    "/path/to/repo2",
 ]
 
 # JIRA project keys to look for (customize this)

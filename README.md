@@ -5,7 +5,7 @@ CLI for working with JIRA issues from the terminal. Covers statistics, cross-sys
 ## Install
 
 ```bash
-uv tool install ./packages/jira
+uv tool install .
 ```
 
 ## Prerequisites

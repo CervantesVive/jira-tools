@@ -9,3 +9,6 @@ build/
 .venv/
 .python-version
 uv.lock
+
+# secrets
+.env
